@@ -27,5 +27,9 @@
       
       $this->stmt->execute();
     }
+    
+    function getUpdateStatus(){
+      return $this->stmt->rowCount();
+    }
   }
 ?>

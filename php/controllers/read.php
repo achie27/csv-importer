@@ -12,7 +12,7 @@
     $db = $conn->getHandle();
     $read_handler = new StudentRead($db);
     
-    if($d['all'] == 'true'){
+    if($d['type'] == 'all'){
       $stus = $read_handler->getAll();
   
       $op = [];
@@ -30,8 +30,22 @@
       header('Content-type: application/json');
       echo json_encode($op);
   
-    } else {
+    // } elseif ($d['type'] == 'pred') {
       
+    //   $student = new Student($d['fname'], $d['lname'], $d['dob']);
+    //   $stu = $read_handler->get($student)->getData();
+  
+    //   header('Content-type: application/json');
+    //   echo json_encode([
+    //     'id' => $stu['id'], 
+    //     'fname' => $stu['fname'], 
+    //     'lname' => $stu['lname'], 
+    //     'dob' => $stu['dob'], 
+    //     'marks' => $stu['marks'] 
+    //   ]);
+      
+    } else {
+    
       $student = new Student($d['fname'], $d['lname'], $d['dob']);
       $stu = $read_handler->get($student)->getData();
   
@@ -42,7 +56,7 @@
         'lname' => $stu['lname'], 
         'dob' => $stu['dob'], 
         'marks' => $stu['marks'] 
-      ]);
+      ]);  
     }
       http_response_code(200);
   } 

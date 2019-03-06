@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>CSV Importer</title>
+    <script>
+      window.onload = () => {
+        let form = document.getElementById('update-form');
+        form.addEventListener('submit', (e) => {
+          
+          e.preventDefault();
+          
+          let req = new XMLHttpRequest();
+          req.onreadystatechange = () => {
+            if(this.readystate == 4 && this.status == 200)
+              console.log('send');
+          };
+          
+          req.open('POST', '/project/api/csv/', true);
+          req.send(new FormData(form));
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <form enctype='multipart/form-data' id='update-form'>
+      <input type='file' name='csv'>
+      <input type='submit' value='upload csv'>
+    </form>
+  </body>
+</html>

@@ -8,7 +8,7 @@
   parse_str(file_get_contents("php://input"), $d);
 
   try {
-    
+
     $conn = new DatabaseHandler('intern', 'achie27', '');
     $db = $conn->getHandle();
     $upd_handler = new StudentUpdate($db);

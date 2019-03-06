@@ -44,23 +44,13 @@
       $this->stmt_pred->execute();
       $res = $this->stmt_pred->fetchAll();
       
-      if(is_array($res) and count($res) == 1){
-        
-        $student = new Student($fname, $lname, $dob, $res['marks'], $res['id']);
-        return [$student];
-        
-      } elseif (is_array($res) and count($res) > 1) {
-        
-        $op = [];
-        foreach($res as $stu){
-          $stud = new Student($stu['fname'], $stu['lname'], $stu['dob'], $stu['marks'], $stu['id']);
-          array_push($op, $stud);
-        }
-        return $op;
-        
-      } else {
-        return [];
+      $op = [];
+      foreach($res as $stu){
+        $stud = new Student($stu['fname'], $stu['lname'], $stu['dob'], $stu['marks'], $stu['id']);
+        array_push($op, $stud);
       }
+      return $op;
+  
     }
     
     function getAll(){
