@@ -1,0 +1,14 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+RewriteCond %{REQUEST_METHOD} POST
+RewriteRule ^api/create/$ ./php/controllers/create.php
+
+RewriteCond %{REQUEST_METHOD} GET
+RewriteRule ^api/read/$ ./php/controllers/read.php
+
+RewriteCond %{REQUEST_METHOD} PUT
+RewriteRule ^api/update/$ ./php/controllers/update.php
+
+RewriteCond %{REQUEST_METHOD} DELETE
+RewriteRule ^api/delete/$ ./php/controllers/delete.php
