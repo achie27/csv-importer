@@ -19,7 +19,7 @@
     function update(Student $stu, $marks){
       
       $student = $stu->getData();
-      
+    
       $this->stmt->bindParam(":fname", $student['fname']);
       $this->stmt->bindParam(":lname", $student['lname']);
       $this->stmt->bindParam(":dob", $student['dob']);

@@ -2,28 +2,100 @@
   <head>
     <title>CSV Importer</title>
     <script>
-      window.onload = () => {
-        let form = document.getElementById('update-form');
-        form.addEventListener('submit', (e) => {
-          
+      window.addEventListener('load', () => {
+        let updform = document.getElementById('update-form');
+        let insform = document.getElementById('insert-form');
+        let pred = document.getElementById('predictions');
+        
+        updform.addEventListener('submit', (e) => {
+        
           e.preventDefault();
           
           let req = new XMLHttpRequest();
           req.onreadystatechange = () => {
-            if(this.readystate == 4 && this.status == 200)
-              console.log('send');
+            if(req.readyState == 4 && req.status == 200){
+              let data = JSON.parse(req.responseText);
+              console.log(data);
+              
+              let s = "";
+              for(let i in data){
+                let obj = data[i];
+                console.log(i);
+                s += `
+                  <div class='student-selection'>
+                    <div class='student-csv-data'>
+                      <div class='student-csv-data-item'>`+obj['csv_row']['fname']+`</div>
+                      <div class='student-csv-data-item'>`+obj['csv_row']['lname']+`</div>
+                      <div class='student-csv-data-item'>`+obj['csv_row']['dob']+`</div>
+                      <div class='student-csv-data-item'>`+obj['csv_row']['marks']+`</div>
+                    </div>
+                    <div class='student-predictions>'
+                `;
+                
+                for(let j in obj['predictions']){
+                  let pred = obj['predictions'][j];
+                  s += `
+                    <form id='form-`+i+`-`+j+`' class='student-pred-data'>
+                      <input disabled type='text' name='id' class='student-pred-data-item' value=`+pred['id']+`>
+                      <input disabled type='text' name='fname' class='student-pred-data-item' value=`+pred['fname']+`>
+                      <input disabled type='text' name='lname' class='student-pred-data-item' value=`+pred['lname']+`>
+                      <input disabled type='text' name='dob' class='student-pred-data-item' value=`+pred['dob']+`>
+                      <input disabled type='text' name='marks' class='student-pred-data-item' value=`+pred['marks']+`>
+                      <input type='radio' name='csv`+i+`'
+                    </form>
+                  `;
+                }
+                
+                s+='</div></div>';
+              }
+              pred.innerHTML = s;
+            }
           };
           
           req.open('POST', '/project/api/csv/', true);
-          req.send(new FormData(form));
+          req.send(new FormData(updform));
         });
-      };
+        
+        insform.addEventListener('submit', (e) => {
+            
+        });
+      
+      });
+
     </script>
   </head>
   <body>
-    <form enctype='multipart/form-data' id='update-form'>
-      <input type='file' name='csv'>
-      <input type='submit' value='upload csv'>
-    </form>
+    <div class='user-interaction-div'>
+      <div class='user-interaction-div-inner'>
+        <div class='student-creation'>
+          <div class='student-creation-inner'>
+            <form id='insert-form'>
+              <input type='text' name='fname'>
+              <input type='text' name='lname'>
+              <input type='date' name='dob'>
+              <input type='text' name='marks'>
+              <input type='submit' value='Insert'>
+            </form>
+          </div>
+        </div>
+        <div class='csv-update'>
+          <div class='csv-update-inner'>
+            <form enctype='multipart/form-data' id='update-form'>
+              <input type='file' name='csv'>
+              <input type='submit' value='upload csv'>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class='data-display'>
+      <div class='data-display-inner'>
+        <div id='predictions'>
+          
+        </div>
+      </div>
+    </div>
+    
   </body>
 </html>
