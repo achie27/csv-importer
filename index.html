@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>CSV Importer</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css"></link>
     <script>
       window.addEventListener('load', () => {
         let updform = document.getElementById('update-form');
@@ -24,6 +25,7 @@
                 s += `
                   <div class='student-selection'>
                     <div class='student-csv-data'>
+                      <div class='student-csv-data-item'>(`+i+`)</div>
                       <div class='student-csv-data-item'>`+obj['csv_row']['fname']+`</div>
                       <div class='student-csv-data-item'>`+obj['csv_row']['lname']+`</div>
                       <div class='student-csv-data-item'>`+obj['csv_row']['dob']+`</div>
@@ -36,12 +38,11 @@
                   let pred = obj['predictions'][j];
                   s += `
                     <form id='form-`+i+`-`+j+`' class='student-pred-data'>
-                      <input disabled type='text' name='id' class='student-pred-data-item' value=`+pred['id']+`>
+                      <input type='radio' class='student-pred-data-item' name='csv`+i+`'>
                       <input disabled type='text' name='fname' class='student-pred-data-item' value=`+pred['fname']+`>
                       <input disabled type='text' name='lname' class='student-pred-data-item' value=`+pred['lname']+`>
                       <input disabled type='text' name='dob' class='student-pred-data-item' value=`+pred['dob']+`>
                       <input disabled type='text' name='marks' class='student-pred-data-item' value=`+pred['marks']+`>
-                      <input type='radio' name='csv`+i+`'
                     </form>
                   `;
                 }
@@ -56,9 +57,24 @@
           req.send(new FormData(updform));
         });
         
-        insform.addEventListener('submit', (e) => {
-            
-        });
+        // insform.addEventListener('submit', (e) => {
+        //   e.preventDefault();
+          
+        //   let req = new XMLHttpRequest();
+        //   req.onreadystatechange = () => {
+        //     if(req.readyState == 4 && req.status == 200){
+        //       let data = JSON.parse(req.responseText);
+        //       console.log(data);
+        //     }
+        //   }
+          
+        //   req.open('POST', '/project/api/create/', true);
+        //   req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          
+        //   req.send(new FormData(insform));
+        // });
+        
+        JSON.stringify(new FormData(insform));
       
       });
 

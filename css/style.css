@@ -1,0 +1,37 @@
+* {
+	margin : 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.student-selection {
+    
+}
+
+.student-csv-data {
+    width : 100%;
+}
+
+.student-csv-data-item {
+    float : left;
+    width : 20%;
+    padding : 15px 0px;
+    text-align : center;
+    background-color : black;
+    color : white;
+}
+
+.student-predictions {
+    width : 100%;
+    clear : both;
+}
+
+.student-pred-data-item {
+    color : black;
+    background-color : white;
+    text-decoration : none;
+    border : 0.5px solid;
+    float : left;
+    width : 20%;
+    text-align:center;
+}
