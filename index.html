@@ -3,6 +3,10 @@
     <title>CSV Importer</title>
     <link rel="stylesheet" type="text/css" href="./css/style.css"></link>
     <script>
+      
+      let csv_rows = {};
+      let preds = {};
+    
       window.addEventListener('load', () => {
         let updform = document.getElementById('update-form');
         let insform = document.getElementById('insert-form');
@@ -21,6 +25,7 @@
               let s = "";
               for(let i in data){
                 let obj = data[i];
+                csv_rows[i] = obj['csv_row'];
                 console.log(i);
                 s += `
                   <div class='student-selection'>
@@ -36,19 +41,22 @@
                 
                 for(let j in obj['predictions']){
                   let pred = obj['predictions'][j];
+                  preds[i+'-'+j] = pred;
+                  preds[i+'-'+j]['csv_row'] = i;
                   s += `
-                    <form id='form-`+i+`-`+j+`' class='student-pred-data'>
-                      <input type='radio' class='student-pred-data-item' name='csv`+i+`'>
-                      <input disabled type='text' name='fname' class='student-pred-data-item' value=`+pred['fname']+`>
-                      <input disabled type='text' name='lname' class='student-pred-data-item' value=`+pred['lname']+`>
-                      <input disabled type='text' name='dob' class='student-pred-data-item' value=`+pred['dob']+`>
-                      <input disabled type='text' name='marks' class='student-pred-data-item' value=`+pred['marks']+`>
-                    </form>
+                    <div class='student-pred-data'>
+                      <input type='radio' class='student-pred-data-item radio-submits' name='radio`+i+`' id=`+i+'-'+j+`>
+                      <div class='student-pred-data-item'>`+pred['fname']+`</div>
+                      <div class='student-pred-data-item'>`+pred['lname']+`</div>
+                      <div class='student-pred-data-item'>`+pred['dob']+`</div>
+                      <div class='student-pred-data-item'>`+pred['marks']+`</div>
+                    </div>
                   `;
                 }
                 
                 s+='</div></div>';
               }
+              
               pred.innerHTML = s;
             }
           };
@@ -57,24 +65,63 @@
           req.send(new FormData(updform));
         });
         
-        // insform.addEventListener('submit', (e) => {
-        //   e.preventDefault();
+        insform.addEventListener('submit', (e) => {
+          e.preventDefault();
           
-        //   let req = new XMLHttpRequest();
-        //   req.onreadystatechange = () => {
-        //     if(req.readyState == 4 && req.status == 200){
-        //       let data = JSON.parse(req.responseText);
-        //       console.log(data);
-        //     }
-        //   }
+          let req = new XMLHttpRequest();
+          req.onreadystatechange = () => {
+            if(req.readyState == 4 && req.status == 200){
+              console.log(req.responseText);
+            }
+          }
           
-        //   req.open('POST', '/project/api/create/', true);
-        //   req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          let data = {};
+          let formdata = new FormData(insform);
+          for(let [k, v] of formdata.entries())
+            data[k] = v;
           
-        //   req.send(new FormData(insform));
-        // });
+          req.open('POST', '/project/api/create/', true);
+          req.setRequestHeader("Content-Type", "application/json");
+          req.send(JSON.stringify(data));
+          
+          for(let item of insform.elements)
+            item.value = '';
+          
+        });
         
-        JSON.stringify(new FormData(insform));
+        document.getElementById('update-submit').addEventListener('click', (e) => {
+          e.preventDefault();
+          let checked_radios = document.querySelectorAll('.radio-submits:checked');
+          
+          if(checked_radios.length != Object.keys(csv_rows).length){
+            alert('Select updates for all the CSV rows.');
+            return;
+          }
+          
+          let data = [];
+          
+          for(let radio of checked_radios){
+            let row = preds[radio.id].csv_row;
+            data.push({
+              'id' : preds[radio.id].id,
+              'fname' : csv_rows[row].fname,
+              'lname' : csv_rows[row].lname,
+              'marks' : csv_rows[row].marks,
+              'dob' : csv_rows[row].dob
+            });
+          }  
+          
+          let req = new XMLHttpRequest();
+          req.onreadystatechange = () => {
+            if(req.readyState == 4 && req.status == 200){
+              console.log(data);
+            }
+          }
+          
+          req.open('POST', '/project/api/mult_update/', true);
+          req.send(JSON.stringify(data));
+          
+        });
       
       });
 
@@ -110,6 +157,7 @@
         <div id='predictions'>
           
         </div>
+        <button id='update-submit'>Update Records</button>
       </div>
     </div>
     

@@ -5,7 +5,7 @@
   require_once('./StudentUpdate.php');
   
   try{
-    if(1 or isset($_FILES['csv'])){
+    if(isset($_FILES['csv'])){
       
       $conn = new DatabaseHandler('intern', 'achie27', '');
       $db = $conn->getHandle();

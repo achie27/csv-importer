@@ -5,7 +5,6 @@
   require_once('./StudentInsert.php');
   
   $d = json_decode(file_get_contents("php://input"), true);
-    
   try {
     $conn = new DatabaseHandler('intern', 'achie27', '');
     $db = $conn->getHandle();
