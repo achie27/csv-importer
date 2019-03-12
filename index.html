@@ -6,26 +6,35 @@
   </head>
   <body>
     <div class='user-interaction-div'>
-      <div class='user-interaction-div-inner'>
-        <div class='student-creation'>
-          <div class='student-creation-inner'>
-            <form id='insert-form'>
-              <input class='insert-item' type='text' name='fname' placeholder='First Name'>
-              <input class='insert-item' type='text' name='lname' placeholder='Last Name'>
-              <input class='insert-item' type='date' name='dob' placeholder='Date of Birth'>
-              <input class='insert-item' type='text' name='marks' placeholder='Marks'>
-              <button class='insert-item-submit' type='submit'>Insert</button>
-            </form>
+      <div class='container'>
+        <div class='user-interaction-div-inner'>
+          <div class='student-creation'>
+            <div class='student-creation-inner'>
+              <form id='insert-form'>
+                <input class='insert-item' type='text' name='fname' placeholder='First Name'>
+                <input class='insert-item' type='text' name='lname' placeholder='Last Name'>
+                <input class='insert-item' type='date' name='dob' placeholder='Date of Birth'>
+                <input class='insert-item' type='text' name='marks' placeholder='Marks'>
+                <button class='insert-item-submit' type='submit'>Insert</button>
+              </form>
+            </div>
           </div>
-        </div>
-        <div class='csv-update'>
-          <div class='csv-update-inner'>
-            <form enctype='multipart/form-data' id='update-form'>
-              <span class='csv-update-item'></span>
-              <label for="csv-upload" class="file-label">Choose CSV</label>
-              <input id='csv-upload' type='file' name='csv'>
-              <button class='csv-update-item-submit' type='submit'>Upload CSV</button>
-            </form>
+          <div class='csv-update'>
+            <div class='csv-update-inner'>
+              <form enctype='multipart/form-data' id='update-form'>
+                <span class='csv-update-item'></span>
+                <label for="csv-upload" class="file-label">Choose CSV</label>
+                <input id='csv-upload' type='file' name='csv'>
+                <button class='csv-update-item-submit' type='submit'>Upload CSV</button>
+              </form>
+            </div>
+          </div>
+          <div class='show-all-students'>
+            <div class='show-all-students-inner'>
+              <div class='show-all-students-button-wrapper'>
+                <button class='show-all-students-button'>Show all students</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

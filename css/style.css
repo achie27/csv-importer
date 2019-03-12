@@ -13,13 +13,21 @@ input[type=file] {
     width : 1200px;    
 }
 
-.student-selection {
-    clear: both;
+.user-interaction-div {
+    clear : both;
+    text-align : center;
+    display : flex;
+    justify-content : center;
 }
 
-.student-creation-inner, .csv-update-inner {
+.student-selection {
+    clear: both;
+    margin: 15px 0px 0px 0px;
+}
+
+.student-creation-inner, .csv-update-inner, .show-all-students-inner {
     height: 300px;
-    width : 50%;
+    width : 33%;
     display:flex;
     flex-direction : column;
     justify-content: center;
@@ -28,7 +36,7 @@ input[type=file] {
     float: left;    
 }
 
-.insert-item, .insert-item-submit, .csv-update-item, .csv-update-item-submit, .data-display-buttons button {
+.insert-item, .insert-item-submit, .csv-update-item, .csv-update-item-submit, .data-display-buttons button, .show-all-students-button {
     display :block;
     width : 200px;
     height : 30px;
@@ -51,7 +59,7 @@ input[type=file] {
     cursor : pointer;
 }
 
-.insert-item-submit, .csv-update-item-submit, .data-display-buttons button {
+.insert-item-submit, .csv-update-item-submit, .data-display-buttons button, .show-all-students-button {
     border : none;
     background-color: black;
     color: white;
@@ -61,14 +69,14 @@ input[type=file] {
     -webkit-transition: background-color 0.25s, color 0.25s;
 }
 
-.insert-item-submit:hover, .csv-update-item-submit:hover, .data-display-buttons button:hover {
+.insert-item-submit:hover, .csv-update-item-submit:hover, .data-display-buttons button:hover, .show-all-students-button:hover {
     background-color: white;
     color: black;
     border: 1px solid;
     cursor: pointer;
 }
 
-.student-csv-data {
+.student-csv-data, .student-data, .student-data-header {
     width : 100%;
     clear: both;
 }
@@ -92,7 +100,7 @@ input[type=file] {
     font-style : italic;
 }
 
-.student-pred-data-item {
+.student-pred-data-item, .student-data-item, .student-data-header-item {
     color : black;
     background-color : white;
     text-decoration : none;
@@ -106,6 +114,16 @@ input[type=file] {
     align-items : center;
 }
 
+.student-data-item, .student-data-header-item {
+    width : 25%;
+}
+
+.student-data-header-item {
+    font-weight : bold;
+    font-size : 18px;
+    margin: 0px 0px 15px 0px;
+}
+
 .data-display {
     clear : both;
     text-align : center;
@@ -115,9 +133,10 @@ input[type=file] {
 
 .data-display-buttons div {
     display : inline-block;
-    margin : 20px;
+    margin : 20px 0px;
 }
 
 .data-display-buttons button {
-    visibility : hidden;
+    display : none;
+    margin : 20px;
 }

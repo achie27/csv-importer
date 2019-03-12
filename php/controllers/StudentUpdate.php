@@ -17,7 +17,7 @@
       
       $this->stmt_id = $this->db->prepare("
         UPDATE student 
-        SET `marks` = :marks, `fname`= :fname, `lname`= :lname, `dob`= :dob
+        SET `marks` = :marks
         WHERE `id` = :id
       ");
     }
@@ -37,9 +37,6 @@
     function update_with_id(Student $stu, $id){
       $student = $stu->getData();
     
-      $this->stmt_id->bindParam(":fname", $student['fname']);
-      $this->stmt_id->bindParam(":lname", $student['lname']);
-      $this->stmt_id->bindParam(":dob", $student['dob']);
       $this->stmt_id->bindParam(":marks", $student['marks']);
       $this->stmt_id->bindParam(":id", $id);
       

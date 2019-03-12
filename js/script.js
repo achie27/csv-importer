@@ -8,6 +8,7 @@ window.addEventListener('load', () => {
     let csv_label = document.querySelector('#csv-upload');
     let clear_data = document.getElementById('clear-data');
     let update_submit = document.getElementById('update-submit');
+    let show_all_students = document.querySelector('.show-all-students-button');
 
     csv_label.addEventListener('change', e => {
       e.preventDefault();
@@ -70,7 +71,7 @@ window.addEventListener('load', () => {
           }
           
           pred.innerHTML = s;
-          update_submit.style.visibility = clear_data.style.visibility = 'visible';
+          update_submit.style.display = clear_data.style.display = 'block';
         }
       };
       
@@ -142,7 +143,51 @@ window.addEventListener('load', () => {
     
     clear_data.addEventListener('click', e => {
       pred.innerHTML = '';
-      update_submit.style.visibility = clear_data.style.visibility = 'hidden';
+      update_submit.style.display = clear_data.style.display = 'none';
+    });
+    
+    show_all_students.addEventListener('click', e => {
+      e.preventDefault();
+      
+      let req = new XMLHttpRequest();
+      req.onreadystatechange = () => {
+        if(req.readyState == 4){
+          if(req.status == 200){
+            let data = JSON.parse(req.responseText);
+            let html = `
+              <div class='student-data-header'>
+                <div class='student-data-header-inner'>
+                  <div class='student-data-header-item'>First Name</div>
+                  <div class='student-data-header-item'>Last Name</div>
+                  <div class='student-data-header-item'>DOB</div>
+                  <div class='student-data-header-item'>Marks</div>
+                </div>
+              </div>
+            `;
+            for(let obj of data){
+              html += `
+                <div class='student-data'>
+                  <div class='student-data-inner'>
+                    <div class='student-data-item'>`+obj['fname']+`</div>
+                    <div class='student-data-item'>`+obj['lname']+`</div>
+                    <div class='student-data-item'>`+obj['dob']+`</div>
+                    <div class='student-data-item'>`+obj['marks']+`</div>
+                  </div>
+                </div>
+              `;
+            }
+            
+            pred.innerHTML = html;
+            clear_data.style.display = 'block';
+          }
+          else
+            alert('Internal Server Error');
+        }
+      }
+      
+      req.open('GET', '/project/api/read/?type=all', true);
+      req.send();
+      
     });
 
 });

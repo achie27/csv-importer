@@ -3,7 +3,7 @@
   require_once('../models/Student.php');
   require_once('./StudentRead.php');
   require_once('./StudentUpdate.php');
-  
+ 
   try{
     if(isset($_FILES['csv'])){
       
@@ -15,15 +15,21 @@
       
       $thecsv = file($_FILES['csv']['tmp_name']);
       $students_not_updated = [];
+      $tmp_file = fopen('updated_rows.tmp', 'w');
 
       foreach($thecsv as $line){
         $stu = str_getcsv($line); 
         $stud = new Student($stu[0], $stu[1], $stu[2], $stu[3]);
         $ret = $upd_handler->update($stud, $stu[3]);
 
-        if(!($upd_handler->getUpdateStatus()))
+        if($upd_handler->getUpdateStatus())
+          fwrite($tmp_file, $stu[0].','.$stu[1].','.$stu[2].','.$stu[3]);
+        else {
           $students_not_updated[] = $stud;
+        }
       }
+      
+      fclose($tmp_file);
       
       $res = [];
       foreach($students_not_updated as $student){
