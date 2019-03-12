@@ -35,10 +35,12 @@
           $preds[] = $st_pred->getData();
         }
         
-        $res[] = [
-          "csv_row" => $st_data,
-          "predictions" => $preds
-        ];
+        if(count($preds) > 0){
+          $res[] = [
+            "csv_row" => $st_data,
+            "predictions" => $preds
+          ];
+        }
       } 
       
       echo json_encode($res);

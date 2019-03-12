@@ -2,10 +2,19 @@
 	margin : 0;
 	padding: 0;
 	box-sizing: border-box;
+	font-family : Arial;
 }
 
 input[type=file] {
     display : none;
+}
+
+.container {
+    width : 1200px;    
+}
+
+.student-selection {
+    clear: both;
 }
 
 .student-creation-inner, .csv-update-inner {
@@ -19,7 +28,7 @@ input[type=file] {
     float: left;    
 }
 
-.insert-item, .insert-item-submit, .csv-update-item, .csv-update-item-submit {
+.insert-item, .insert-item-submit, .csv-update-item, .csv-update-item-submit, .data-display-buttons button {
     display :block;
     width : 200px;
     height : 30px;
@@ -28,7 +37,6 @@ input[type=file] {
 }
 
 .file-label {
-    font-family : Arial;
     text-align : center;
     border: 1px solid;
     font-weight: 900;
@@ -43,7 +51,7 @@ input[type=file] {
     cursor : pointer;
 }
 
-.insert-item-submit, .csv-update-item-submit {
+.insert-item-submit, .csv-update-item-submit, .data-display-buttons button {
     border : none;
     background-color: black;
     color: white;
@@ -53,7 +61,7 @@ input[type=file] {
     -webkit-transition: background-color 0.25s, color 0.25s;
 }
 
-.insert-item-submit:hover, .csv-update-item-submit:hover {
+.insert-item-submit:hover, .csv-update-item-submit:hover, .data-display-buttons button:hover {
     background-color: white;
     color: black;
     border: 1px solid;
@@ -62,6 +70,7 @@ input[type=file] {
 
 .student-csv-data {
     width : 100%;
+    clear: both;
 }
 
 .student-csv-data-item {
@@ -71,23 +80,44 @@ input[type=file] {
     text-align : center;
     background-color : black;
     color : white;
+    font-size: 18;
+    font-weight : bold;
+    letter-spacing : 2;
 }
 
 .student-predictions {
     width : 100%;
     clear : both;
+    font-weight : bold;
+    font-style : italic;
 }
 
 .student-pred-data-item {
     color : black;
     background-color : white;
     text-decoration : none;
-    border : 0.5px solid;
     float : left;
     width : 20%;
-    text-align:center;
+    height : 30px;
+    display : flex;
+    flex-direction : column;
+    justify-content : center;
+    text-align : center;
+    align-items : center;
 }
 
 .data-display {
     clear : both;
+    text-align : center;
+    display : flex;
+    justify-content : center;
+}
+
+.data-display-buttons div {
+    display : inline-block;
+    margin : 20px;
+}
+
+.data-display-buttons button {
+    visibility : hidden;
 }

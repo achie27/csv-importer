@@ -13,10 +13,14 @@
       $this->stmt = $this->db->prepare("SELECT * FROM student WHERE `fname`=:fname and `lname`=:lname and `dob`=:dob");
       $this->stmt_pred = $this->db->prepare("
         SELECT * FROM student 
-        WHERE (`fname`=:fname and `lname`=:lname) 
-        or (`dob`=:dob and `lname`=:lname)
-        or (`dob`=:dob and `fname`=:fname)
-        and NOT (`fname`=:fname and `lname`=:lname and `dob`=:dob)
+        WHERE (
+          (NOT (`fname`=:fname and `lname`=:lname and `dob`=:dob))
+          and (
+            (`fname`=:fname and `lname`=:lname) 
+            or (`dob`=:dob and `lname`=:lname)
+            or (`dob`=:dob and `fname`=:fname)
+          )
+        )
       ");
       $this->stmt_all = $this->db->prepare("SELECT * FROM student");
     }
