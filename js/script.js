@@ -23,55 +23,62 @@ window.addEventListener('load', () => {
       
       let req = new XMLHttpRequest();
       req.onreadystatechange = () => {
-        if(req.readyState == 4 && req.status == 200){
-          let data = JSON.parse(req.responseText);
-          console.log(data);
-          
-          let s = "";
-          for(let i in data){
-            let obj = data[i];
-            csv_rows[i] = obj['csv_row'];
-            console.log(i);
-            s += `
-              <div class='student-selection'>
-                <div class='student-selection-inner'>
-                  <div class='student-csv-data'>
-                    <div class='student-csv-data-inner'>
-                      <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+i+`.</div></div>
-                      <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+obj['csv_row']['fname']+`</div></div>
-                      <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+obj['csv_row']['lname']+`</div></div>
-                      <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+obj['csv_row']['dob']+`</div></div>
-                      <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+obj['csv_row']['marks']+`</div></div>
-                    </div>
-                  </div>
-                  <div class='student-predictions'>
-                    <div class='student-predictions-inner'>
-            `;
+        if(req.readyState == 4){
+          if(req.status == 200){
+            let data = JSON.parse(req.responseText);
+            console.log(data);
             
-            for(let j in obj['predictions']){
-              let pred = obj['predictions'][j];
-              preds[i+'-'+j] = pred;
-              preds[i+'-'+j]['csv_row'] = i;
+            let s = "";
+            for(let i in data){
+              let obj = data[i];
+              csv_rows[i] = obj['csv_row'];
+              console.log(i);
               s += `
-                <div class='student-pred-data'>
-                  <div class='student-pred-data-inner'>
-                    <div class='student-pred-data-item'>  
-                      <input type='radio' class='radio-submits' name='radio`+i+`' id=`+i+'-'+j+`>
+                <div class='student-selection'>
+                  <div class='student-selection-inner'>
+                    <div class='student-csv-data'>
+                      <div class='student-csv-data-inner'>
+                        <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+i+`.</div></div>
+                        <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+obj['csv_row']['fname']+`</div></div>
+                        <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+obj['csv_row']['lname']+`</div></div>
+                        <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+obj['csv_row']['dob']+`</div></div>
+                        <div class='student-csv-data-item'><div class='student-csv-data-item-inner'>`+obj['csv_row']['marks']+`</div></div>
+                      </div>
                     </div>
-                    <div class='student-pred-data-item'>`+pred['fname']+`</div>
-                    <div class='student-pred-data-item'>`+pred['lname']+`</div>
-                    <div class='student-pred-data-item'>`+pred['dob']+`</div>
-                    <div class='student-pred-data-item'>`+pred['marks']+`</div>
-                  </div>
-                </div>
+                    <div class='student-predictions'>
+                      <div class='student-predictions-inner'>
               `;
+              
+              for(let j in obj['predictions']){
+                let pred = obj['predictions'][j];
+                preds[i+'-'+j] = pred;
+                preds[i+'-'+j]['csv_row'] = i;
+                s += `
+                  <div class='student-pred-data'>
+                    <div class='student-pred-data-inner'>
+                      <div class='student-pred-data-item'>  
+                        <input type='radio' class='radio-submits' name='radio`+i+`' id=`+i+'-'+j+`>
+                      </div>
+                      <div class='student-pred-data-item'>`+pred['fname']+`</div>
+                      <div class='student-pred-data-item'>`+pred['lname']+`</div>
+                      <div class='student-pred-data-item'>`+pred['dob']+`</div>
+                      <div class='student-pred-data-item'>`+pred['marks']+`</div>
+                    </div>
+                  </div>
+                `;
+              }
+              
+              s+='</div></div></div></div>';
             }
             
-            s+='</div></div></div></div>';
-          }
-          
-          pred.innerHTML = s;
-          update_submit.style.display = clear_data.style.display = 'block';
+            pred.innerHTML = s;
+            update_submit.style.display = clear_data.style.display = 'block';
+        
+          } else if (req.status == 400) {
+            alert('Uploaded file not CSV');
+          } else if (req.status == 500) {
+            alert('Internal Server Error');
+          } 
         }
       };
       
@@ -88,8 +95,10 @@ window.addEventListener('load', () => {
         if(req.readyState == 4){
           if(req.status == 200)
             alert('Successfully inserted student.');
-          else
+          else if(req.status == 500)
             alert('Internal Server Error');
+          else if(req.status == 400)
+            alert('Insert acceptable values.');
         }
       }
       
@@ -132,7 +141,13 @@ window.addEventListener('load', () => {
       let req = new XMLHttpRequest();
       req.onreadystatechange = () => {
         if(req.readyState == 4 && req.status == 200){
-          console.log(data);
+          if(req.status == 200)
+            alert('Updated the rows'); 
+          else if (req.status == 400) {
+            alert("Don't meddle with the shown data");
+          } else if (req.status == 500) {
+            alert('Internal Server Error');
+          } 
         }
       }
       
@@ -179,6 +194,7 @@ window.addEventListener('load', () => {
             
             pred.innerHTML = html;
             clear_data.style.display = 'block';
+            alert('Matched rows updated; select the rows to be updated from the shown suggestions.');
           }
           else
             alert('Internal Server Error');

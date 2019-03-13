@@ -3,9 +3,15 @@
   require_once('../models/Student.php');
   require_once('./StudentRead.php');
   require_once('./StudentUpdate.php');
- 
+
   try{
     if(isset($_FILES['csv'])){
+  
+      $mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv', 'application/octet-stream');
+      if(!in_array($_FILES['csv']['type'], $mimes)){
+        http_response_code(400);
+        die("Sorry, mime type not allowed");
+      }
       
       $conn = new DatabaseHandler('intern', 'achie27', '');
       $db = $conn->getHandle();
@@ -15,10 +21,15 @@
       
       $thecsv = file($_FILES['csv']['tmp_name']);
       $students_not_updated = [];
-      $tmp_file = fopen('updated_rows.tmp', 'w');
+      $date = date_create();
+      $tmp_file = fopen('updated_rows_'.date_format($date, 'Y_m_d_H_i_s').'.tmp', 'w');
 
       foreach($thecsv as $line){
-        $stu = str_getcsv($line); 
+        $stu = str_getcsv($line);
+        if(count($stu) !== 4) {
+          http_response_code(400);
+          die("Wrong CSV format");
+        }
         $stud = new Student($stu[0], $stu[1], $stu[2], $stu[3]);
         $ret = $upd_handler->update($stud, $stu[3]);
 
@@ -51,6 +62,10 @@
       
       echo json_encode($res);
       http_response_code(200);
+      
+    } else {
+      http_response_code(400);
+      die();
     }
   }
   
