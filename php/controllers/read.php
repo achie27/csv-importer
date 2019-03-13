@@ -13,10 +13,13 @@
   
   try {
     
+    // Get a handle to the db
     $conn = new DatabaseHandler('intern', 'achie27', '');
     $db = $conn->getHandle();
+    
     $read_handler = new StudentRead($db);
     
+    // If all the students are required
     if($d['type'] == 'all'){
       $stus = $read_handler->getAll();
   
@@ -35,7 +38,9 @@
       header('Content-type: application/json');
       echo json_encode($op);
   
+    // If a single student is required
     } else {
+      
       if((
         (!isset($d['fname'])) or
         (strlen($d['fname']) > $MAX_FNAME_LEN) or

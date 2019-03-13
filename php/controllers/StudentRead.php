@@ -25,6 +25,7 @@
       $this->stmt_all = $this->db->prepare("SELECT * FROM student");
     }
     
+    // Get the data for $stud
     function get(Student $stud){
       
       $student = $stud->getData();
@@ -40,6 +41,7 @@
       return $stu;
     }
 
+    // Suggest students with similar fname, lname, or dob
     function predict($fname, $lname, $dob){
       $this->stmt_pred->bindParam(":fname", $fname);
       $this->stmt_pred->bindParam(":lname", $lname);

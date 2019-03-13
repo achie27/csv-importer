@@ -9,8 +9,10 @@
   $MAX_MARKS = 100;
   $MIN_MARKS = 0;
   
+  // Expects JSON
   $d = json_decode(file_get_contents("php://input"), true);
   
+  // Validation
   if((
     (!isset($d['fname'])) or
     (strlen($d['fname']) > $MAX_FNAME_LEN) or
@@ -35,8 +37,8 @@
   try {
     $conn = new DatabaseHandler('intern', 'achie27', '');
     $db = $conn->getHandle();
+    
     $upd_handler = new StudentUpdate($db);
-    $student = 0;
     
     $student = new Student($d['fname'], $d['lname'], $d['dob']);
     $upd_handler->update($student, $d['marks']);

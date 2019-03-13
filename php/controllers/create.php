@@ -9,8 +9,11 @@
   $MAX_MARKS = 100;
   $MIN_MARKS = 0;
   
+  // Expects JSON
   $d = json_decode(file_get_contents("php://input"), true);
   
+  
+  // Validating sent data
   if((
       (!isset($d['fname'])) or
       (strlen($d['fname']) > $MAX_FNAME_LEN) or
@@ -34,11 +37,14 @@
     }
   
   try {
+    // Gets the DB handle
     $conn = new DatabaseHandler('intern', 'achie27', '');
     $db = $conn->getHandle();
+    
     $new_student = new Student($d['fname'], $d['lname'], $d['dob'], $d['marks']);
     $insert_handler = new StudentInsert($db);
     $insert_handler->insert($new_student);
+    
     http_response_code(200);
   } 
   

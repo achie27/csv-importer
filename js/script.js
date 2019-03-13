@@ -2,14 +2,29 @@ let csv_rows = {};
 let preds = {};
 
 window.addEventListener('load', () => {
-    let updform = document.getElementById('update-form');
-    let insform = document.getElementById('insert-form');
-    let pred = document.getElementById('predictions');
+    // Handle to the CSV Upload form
+    let updform = document.querySelector('#update-form');
+    
+    // Handle to the Insertion form
+    let insform = document.querySelector('#insert-form');
+    
+    // Handle to the data display div
+    let pred = document.querySelector('#predictions');
+    
+    // Handle to the CSV Input 
     let csv_label = document.querySelector('#csv-upload');
-    let clear_data = document.getElementById('clear-data');
-    let update_submit = document.getElementById('update-submit');
+    
+    // Handle to the Clear button
+    let clear_data = document.querySelector('#clear-data');
+    
+    // Handle to the suggestion submit button
+    let update_submit = document.querySelector('#update-submit');
+    
+    // Handle to the Show All students button
     let show_all_students = document.querySelector('.show-all-students-button');
 
+
+    // Displays the name of the file when selected
     csv_label.addEventListener('change', e => {
       e.preventDefault();
       let file_path = updform.elements['csv'].value;
@@ -17,8 +32,9 @@ window.addEventListener('load', () => {
       document.querySelector('span.csv-update-item').textContent = val;
     });
     
-    updform.addEventListener('submit', (e) => {
     
+    // Renders the suggestions on CSV upload
+    updform.addEventListener('submit', (e) => {
       e.preventDefault();
       
       let req = new XMLHttpRequest();
@@ -26,8 +42,7 @@ window.addEventListener('load', () => {
         if(req.readyState == 4){
           if(req.status == 200){
             let data = JSON.parse(req.responseText);
-            console.log(data);
-            
+
             let s = "";
             for(let i in data){
               let obj = data[i];
@@ -73,7 +88,8 @@ window.addEventListener('load', () => {
             
             pred.innerHTML = s;
             update_submit.style.display = clear_data.style.display = 'block';
-        
+            alert('Matched rows updated; select the rows to be updated from the shown suggestions.');
+            
           } else if (req.status == 400) {
             alert('Uploaded file not CSV');
           } else if (req.status == 500) {
@@ -87,6 +103,8 @@ window.addEventListener('load', () => {
       
     });
     
+    
+    // POSTs form data to API on click
     insform.addEventListener('submit', (e) => {
       e.preventDefault();
       
@@ -116,8 +134,12 @@ window.addEventListener('load', () => {
       
     });
     
+    
+    // POSTs the selected suggestions to the API
     update_submit.addEventListener('click', (e) => {
       e.preventDefault();
+      
+      // Gets all the selected suggestions
       let checked_radios = document.querySelectorAll('.radio-submits:checked');
       
       if(checked_radios.length != Object.keys(csv_rows).length){
@@ -128,7 +150,10 @@ window.addEventListener('load', () => {
       let data = [];
       
       for(let radio of checked_radios){
+        
+        // The unmatched CSV row this suggestion corresponds to
         let row = preds[radio.id].csv_row;
+        
         data.push({
           'id' : preds[radio.id].id,
           'fname' : csv_rows[row].fname,
@@ -156,11 +181,15 @@ window.addEventListener('load', () => {
       
     });
     
+    
+    // Clears the Data Display div and hides the Clear and Update button
     clear_data.addEventListener('click', e => {
       pred.innerHTML = '';
       update_submit.style.display = clear_data.style.display = 'none';
     });
     
+    
+    // GETs all the students and renders them in the Data Display div
     show_all_students.addEventListener('click', e => {
       e.preventDefault();
       
@@ -194,7 +223,6 @@ window.addEventListener('load', () => {
             
             pred.innerHTML = html;
             clear_data.style.display = 'block';
-            alert('Matched rows updated; select the rows to be updated from the shown suggestions.');
           }
           else
             alert('Internal Server Error');

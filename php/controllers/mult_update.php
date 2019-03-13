@@ -8,11 +8,15 @@
   $MAX_MARKS = 100;
   $MIN_MARKS = 0;
 
+  // Expects JSON
   $data = json_decode(file_get_contents("php://input"), true);
 
   try {
+    
+    // Gets a handle to the DB
     $conn = new DatabaseHandler('intern', 'achie27', '');
     $db = $conn->getHandle();
+    
     $upd_handler = new StudentUpdate($db);
 
     foreach($data as $d){
