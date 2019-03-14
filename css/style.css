@@ -114,6 +114,14 @@ input[type=file] {
     align-items : center;
 }
 
+.student-pred-data-inner {
+    height : 30px;
+}
+
+.student-pred-data-inner:hover > .student-pred-data-item {
+    background-color: skyblue; 
+}
+
 .student-data-item, .student-data-header-item {
     width : 25%;
 }
