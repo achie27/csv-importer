@@ -165,11 +165,11 @@ window.addEventListener('load', () => {
       
       let req = new XMLHttpRequest();
       req.onreadystatechange = () => {
-        if(req.readyState == 4 && req.status == 200){
+        if(req.readyState == 4){
           if(req.status == 200)
             alert('Updated the rows'); 
           else if (req.status == 400) {
-            alert("Don't meddle with the shown data");
+            alert("Marks need to be in 0-100 and don't meddle with the shown data");
           } else if (req.status == 500) {
             alert('Internal Server Error');
           } 

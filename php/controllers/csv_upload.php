@@ -23,7 +23,7 @@
       
       // Creating the temporary file 
       $date = date_create();
-      $tmp_file = fopen('updated_rows_'.date_format($date, 'Y_m_d_H_i_s').'.tmp', 'w');
+      $tmp_file = fopen('../updates/updated_rows_'.date_format($date, 'Y_m_d_H_i_s').'.tmp', 'w');
 
       $thecsv = file($_FILES['csv']['tmp_name']);
       $students_not_updated = [];

@@ -7,6 +7,7 @@
     private $db = 0;
     private $stmt = "";
     private $stmt_all = "";
+    private $stmt_pred = "";
     
     function __construct($conn){
       $this->db = $conn;
@@ -16,9 +17,9 @@
         WHERE (
           (NOT (`fname`=:fname and `lname`=:lname and `dob`=:dob))
           and (
-            (`fname`=:fname and `lname`=:lname) 
-            or (`dob`=:dob and `lname`=:lname)
-            or (`dob`=:dob and `fname`=:fname)
+            (`fname` like :fnamelike and `lname` like :lnamelike) 
+            or (`dob`=:dob and `lname` like :lnamelike)
+            or (`dob`=:dob and `fname` like :fnamelike)
           )
         )
       ");
@@ -43,8 +44,12 @@
 
     // Suggest students with similar fname, lname, or dob
     function predict($fname, $lname, $dob){
+      $fnamelike = '%'.$fname.'%';
+      $lnamelike = '%'.$lname.'%';
       $this->stmt_pred->bindParam(":fname", $fname);
       $this->stmt_pred->bindParam(":lname", $lname);
+      $this->stmt_pred->bindParam(":fnamelike", $fnamelike);
+      $this->stmt_pred->bindParam(":lnamelike", $lnamelike);
       $this->stmt_pred->bindParam(":dob", $dob);
       
       $this->stmt_pred->execute();
